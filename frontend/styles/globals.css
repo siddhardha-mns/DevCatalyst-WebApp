@@ -1,0 +1,355 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Courier+Prime:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Retro Theme Variables */
+:root {
+  --neon-cyan: #00ffff;
+  --neon-pink: #ff006e;
+  --neon-green: #00ff00;
+  --neon-purple: #8b5cf6;
+  --neon-orange: #ff8500;
+  --retro-bg: #0a0a0a;
+  --retro-grid: #1a1a2e;
+  --retro-text: #e94560;
+  --retro-accent: #f39c12;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Courier Prime', monospace;
+  background: var(--retro-bg);
+  color: var(--neon-cyan);
+  overflow-x: hidden;
+}
+
+/* Retro Grid Background */
+.retro-grid {
+  background-image: 
+    linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  position: relative;
+}
+
+.retro-grid::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, transparent 0%, rgba(10, 10, 10, 0.8) 100%);
+  pointer-events: none;
+}
+
+/* Neon Text Effects */
+.neon-text {
+  -webkit-text-stroke: 1px black;
+  text-stroke: 1px black;
+  text-shadow: 
+    -1px -1px 0 black,
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black,
+    0 0 5px currentColor,
+    0 0 10px currentColor,
+    0 0 15px currentColor,
+    0 0 20px currentColor;
+  animation: neon-flicker 2s infinite alternate;
+}
+
+.neon-cyan { color: var(--neon-cyan); }
+.neon-pink { color: var(--neon-pink); }
+.neon-green { color: var(--neon-green); }
+.neon-purple { color: var(--neon-purple); }
+.neon-orange { color: var(--neon-orange); }
+
+@keyframes neon-flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+/* Retro Buttons */
+.retro-btn {
+  background: transparent;
+  border: 2px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  padding: 12px 24px;
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.retro-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.retro-btn:hover::before {
+  left: 100%;
+}
+
+.retro-btn:hover {
+  box-shadow: 
+    0 0 20px var(--neon-cyan),
+    inset 0 0 20px rgba(0, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Retro Cards */
+.retro-card {
+  background: rgba(26, 26, 46, 0.8);
+  border: 1px solid var(--neon-cyan);
+  border-radius: 0;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.retro-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan), var(--neon-green));
+  animation: rainbow-slide 3s linear infinite;
+}
+
+@keyframes rainbow-slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Glitch Effect */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  animation: glitch-1 0.6s infinite;
+  color: var(--neon-pink);
+  z-index: -1;
+}
+
+.glitch::after {
+  animation: glitch-2 0.6s infinite;
+  color: var(--neon-green);
+  z-index: -2;
+}
+
+@keyframes glitch-1 {
+  0%, 14%, 15%, 49%, 50%, 99%, 100% {
+    transform: translate(0);
+  }
+  15%, 49% {
+    transform: translate(-2px, -2px);
+  }
+}
+
+@keyframes glitch-2 {
+  0%, 20%, 21%, 62%, 63%, 99%, 100% {
+    transform: translate(0);
+  }
+  21%, 62% {
+    transform: translate(2px, 2px);
+  }
+}
+
+/* Scanlines */
+.scanlines {
+  position: relative;
+}
+
+.scanlines::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    transparent 0%,
+    rgba(0, 255, 255, 0.03) 50%,
+    transparent 100%
+  );
+  background-size: 100% 4px;
+  animation: scanlines 0.1s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes scanlines {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(4px); }
+}
+
+/* Retro Typography */
+.retro-title {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  -webkit-text-stroke: 0.5px black;
+  text-stroke: 0.5px black;
+  text-shadow: 
+    -1px -1px 0 black,
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black;
+}
+
+.retro-subtitle {
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  letter-spacing: 2px;
+  -webkit-text-stroke: 0.5px black;
+  text-stroke: 0.5px black;
+  text-shadow: 
+    -1px -1px 0 black,
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--retro-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--neon-cyan);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-pink);
+}
+
+/* Floating Elements */
+.floating {
+  animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+/* Pulse Animation */
+.pulse-neon {
+  animation: pulse-neon 2s infinite;
+}
+
+@keyframes pulse-neon {
+  0%, 100% {
+    box-shadow: 0 0 20px var(--neon-cyan);
+  }
+  50% {
+    box-shadow: 0 0 40px var(--neon-cyan), 0 0 60px var(--neon-cyan);
+  }
+}
+
+/* Matrix-style background */
+.matrix-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+/* Retro Navigation */
+.retro-nav {
+  backdrop-filter: blur(10px);
+  background: rgba(10, 10, 10, 0.9);
+  border-bottom: 2px solid var(--neon-cyan);
+}
+
+/* Stats Counter */
+.stats-counter {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: 3rem;
+  -webkit-text-stroke: 1px black;
+  text-stroke: 1px black;
+  text-shadow: 
+    -1px -1px 0 black,
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black,
+    0 0 20px currentColor;
+}
+
+/* Form Styles */
+.retro-input {
+  background: transparent;
+  border: 2px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  padding: 12px 16px;
+  font-family: 'Courier Prime', monospace;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.retro-input:focus {
+  box-shadow: 0 0 20px var(--neon-cyan);
+  border-color: var(--neon-pink);
+}
+
+.retro-input::placeholder {
+  color: rgba(0, 255, 255, 0.5);
+}
+
+/* Loading Animation */
+.loading-dots {
+  display: inline-block;
+}
+
+.loading-dots::after {
+  content: '.';
+  animation: loading-dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes loading-dots {
+  0%, 20% { content: '.'; }
+  40% { content: '..'; }
+  60% { content: '...'; }
+  80%, 100% { content: ''; }
+}
