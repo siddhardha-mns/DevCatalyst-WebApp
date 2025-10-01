@@ -1,0 +1,9 @@
+frontend/
+package.json
+package-lock.json
+start.sh
+node_modules/
+.git/
+README.md
+DEPLOYMENT_GUIDE.md
+HOSTING_SECRETS.md
