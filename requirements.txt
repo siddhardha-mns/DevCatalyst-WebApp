@@ -1,0 +1,5 @@
+# DevCatalyst Backend Requirements
+# Install backend dependencies: pip install -r backend/requirements.txt
+# This file is for Railway auto-detection only
+
+-r backend/requirements.txt

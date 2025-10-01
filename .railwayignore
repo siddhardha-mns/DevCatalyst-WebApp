@@ -1,7 +1,5 @@
 frontend/
-package.json
-package-lock.json
-start.sh
+dev-scripts/
 node_modules/
 .git/
 README.md
