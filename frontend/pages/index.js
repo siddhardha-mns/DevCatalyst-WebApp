@@ -111,6 +111,15 @@ export default function Home() {
                   {item}
                 </motion.a>
               ))}
+              <motion.a
+                href="/admin/login"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="retro-subtitle text-orange-400 hover:text-yellow-400 transition-colors duration-300 neon-text"
+              >
+                Admin
+              </motion.a>
             </div>
 
             {/* Mobile Menu Button */}
@@ -139,6 +148,13 @@ export default function Home() {
                   {item}
                 </a>
               ))}
+              <a
+                href="/admin/login"
+                className="block py-2 retro-subtitle text-orange-400 hover:text-yellow-400"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Admin
+              </a>
             </motion.div>
           )}
         </nav>
