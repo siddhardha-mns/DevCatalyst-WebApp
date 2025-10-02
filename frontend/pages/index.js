@@ -1,7 +1,17 @@
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 import Link from "next/link";
+
+// Simple safe imports for animations
+let animationUtils = {};
+if (typeof window !== 'undefined') {
+  try {
+    animationUtils = require('../utils/animations');
+  } catch (error) {
+    console.warn('Animation utilities failed to load:', error);
+  }
+}
 
 const CountdownTimer = ({ targetDate }) => {
   const [timeLeft, setTimeLeft] = useState({
@@ -33,7 +43,7 @@ const CountdownTimer = ({ targetDate }) => {
     <div className="flex space-x-4 justify-center">
       {Object.entries(timeLeft).map(([unit, value]) => (
         <div key={unit} className="text-center">
-          <div className="retro-card p-4 bg-gray-900 border-2 border-cyan-400">
+          <div className="retro-card p-4 bg-gray-900 border-2 border-cyan-400 interactive">
             <div className="stats-counter neon-cyan">{value.toString().padStart(2, '0')}</div>
             <div className="text-sm retro-subtitle uppercase text-cyan-300">{unit}</div>
           </div>
@@ -43,36 +53,130 @@ const CountdownTimer = ({ targetDate }) => {
   );
 };
 
-const StatCard = ({ number, label, delay }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay, duration: 0.6 }}
-    className="retro-card p-6 text-center pulse-neon"
-  >
-    <div className="stats-counter neon-green mb-2">{number}</div>
-    <div className="retro-subtitle text-cyan-300">{label}</div>
-  </motion.div>
-);
+const StatCard = ({ number, label, delay }) => {
+  const cardRef = useRef(null);
 
-const TeamMember = ({ name, role, avatar, delay }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ delay, duration: 0.5 }}
-    className="retro-card p-6 text-center floating"
-  >
-    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-cyan-400 to-pink-500 flex items-center justify-center text-2xl font-bold retro-title">
-      {avatar}
-    </div>
-    <h3 className="retro-subtitle neon-cyan mb-2">{name}</h3>
-    <p className="text-cyan-300 text-sm">{role}</p>
-  </motion.div>
-);
+  const handleMouseEnter = () => {
+    if (animationUtils.animateCardHover && cardRef.current) {
+      animationUtils.animateCardHover(cardRef.current);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (animationUtils.animateCardLeave && cardRef.current) {
+      animationUtils.animateCardLeave(cardRef.current);
+    }
+  };
+
+  return (
+    <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.6 }}
+      className="retro-card p-6 text-center pulse-neon interactive"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="card-content">
+        <div className="stats-counter neon-green mb-2">{number}</div>
+        <div className="retro-subtitle text-cyan-300">{label}</div>
+      </div>
+    </motion.div>
+  );
+};
+
+const TeamMember = ({ name, role, avatar, delay }) => {
+  const cardRef = useRef(null);
+
+  const handleMouseEnter = () => {
+    if (animationUtils.animateCardHover && cardRef.current) {
+      animationUtils.animateCardHover(cardRef.current);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (animationUtils.animateCardLeave && cardRef.current) {
+      animationUtils.animateCardLeave(cardRef.current);
+    }
+  };
+
+  return (
+    <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay, duration: 0.5 }}
+      className="retro-card p-6 text-center floating interactive"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="card-content">
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-cyan-400 to-pink-500 flex items-center justify-center text-2xl font-bold retro-title">
+          {avatar}
+        </div>
+        <h3 className="retro-subtitle neon-cyan mb-2">{name}</h3>
+        <p className="text-cyan-300 text-sm">{role}</p>
+      </div>
+    </motion.div>
+  );
+};
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const nextEventDate = new Date('2025-12-15T10:00:00').getTime();
+  const heroRef = useRef(null);
+  const matrixRef = useRef(null);
+  const particleRef = useRef(null);
+
+  useEffect(() => {
+    // Initialize animations safely
+    if (animationUtils.createCursorAnimation) {
+      animationUtils.createCursorAnimation();
+    }
+    
+    if (animationUtils.animateHeroElements) {
+      animationUtils.animateHeroElements();
+    }
+    
+    if (animationUtils.createMatrixRain && matrixRef.current) {
+      animationUtils.createMatrixRain(matrixRef.current);
+    }
+    
+    if (animationUtils.createParticleSystem && particleRef.current) {
+      animationUtils.createParticleSystem(particleRef.current);
+    }
+
+    // Floating animation for background elements
+    const floatingElements = document.querySelectorAll('.floating');
+    if (animationUtils.createFloatingAnimation && floatingElements.length > 0) {
+      animationUtils.createFloatingAnimation(floatingElements);
+    }
+  }, []);
+
+  const handleNavHover = (e) => {
+    if (animationUtils.animateNavHover) {
+      animationUtils.animateNavHover(e.target);
+    }
+  };
+
+  const handleNavLeave = (e) => {
+    if (animationUtils.animateNavLeave) {
+      animationUtils.animateNavLeave(e.target);
+    }
+  };
+
+  const handleButtonHover = (e) => {
+    if (animationUtils.animateButtonHover) {
+      animationUtils.animateButtonHover(e.target);
+    }
+  };
+
+  const handleButtonLeave = (e) => {
+    if (animationUtils.animateButtonLeave) {
+      animationUtils.animateButtonLeave(e.target);
+    }
+  };
 
   return (
     <>
@@ -81,9 +185,15 @@ export default function Home() {
         <meta name="description" content="DevCatalyst Tech Club - Join our community of passionate developers" />
       </Head>
 
-      <div className="min-h-screen retro-grid scanlines">
+      <div className="min-h-screen retro-grid scanlines relative overflow-hidden">
+        {/* Custom Cursor */}
+        <div className="custom-cursor fixed w-4 h-4 bg-pink-500 rounded-full pointer-events-none z-50 mix-blend-difference" style={{position: 'fixed', transform: 'translate(-50%, -50%)'}}></div>
+        
         {/* Matrix Background Effect */}
-        <div className="matrix-bg"></div>
+        <div ref={matrixRef} className="matrix-bg fixed inset-0 pointer-events-none z-0"></div>
+        
+        {/* Particle System */}
+        <div ref={particleRef} className="fixed inset-0 pointer-events-none z-0"></div>
 
         {/* Navigation */}
         <nav className="retro-nav fixed w-full top-0 z-50 px-6 py-4">
@@ -106,7 +216,9 @@ export default function Home() {
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="retro-subtitle text-cyan-400 hover:text-pink-400 transition-colors duration-300 neon-text"
+                  className="retro-subtitle text-cyan-400 hover:text-pink-400 transition-colors duration-300 neon-text interactive"
+                  onMouseEnter={handleNavHover}
+                  onMouseLeave={handleNavLeave}
                 >
                   {item}
                 </motion.a>
@@ -116,7 +228,9 @@ export default function Home() {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="retro-subtitle text-orange-400 hover:text-yellow-400 transition-colors duration-300 neon-text"
+                className="retro-subtitle text-orange-400 hover:text-yellow-400 transition-colors duration-300 neon-text interactive"
+                onMouseEnter={handleNavHover}
+                onMouseLeave={handleNavLeave}
               >
                 Admin
               </motion.a>
@@ -160,13 +274,13 @@ export default function Home() {
         </nav>
 
         {/* Hero Section */}
-        <section className="pt-32 pb-20 px-6 text-center">
-          <div className="max-w-6xl mx-auto">
+        <section ref={heroRef} className="pt-32 pb-20 px-6 text-center relative">
+          <div className="max-w-6xl mx-auto relative z-10">
             <motion.h1
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1 }}
-              className="retro-title text-6xl md:text-8xl mb-6 neon-text neon-cyan glitch"
+              className="hero-title retro-title text-6xl md:text-8xl mb-6 neon-text neon-cyan glitch interactive"
               data-text="DevCatalyst"
             >
               DevCatalyst
@@ -176,7 +290,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.8 }}
-              className="retro-subtitle text-2xl md:text-4xl mb-8 neon-pink"
+              className="hero-subtitle retro-subtitle text-2xl md:text-4xl mb-8 neon-pink interactive"
             >
               Fueling the Next Generation of Developers
             </motion.h2>
@@ -195,9 +309,21 @@ export default function Home() {
               transition={{ delay: 1.4, duration: 0.6 }}
               className="flex flex-col md:flex-row gap-4 justify-center items-center"
             >
-              <button className="retro-btn neon-cyan">Explore Our Community</button>
+              <button 
+                className="hero-button retro-btn neon-cyan interactive"
+                onMouseEnter={handleButtonHover}
+                onMouseLeave={handleButtonLeave}
+              >
+                Explore Our Community
+              </button>
               <Link href="/events">
-                <button className="retro-btn border-pink-500 text-pink-500 hover:text-pink-500">See Upcoming Events</button>
+                <button 
+                  className="hero-button retro-btn border-pink-500 text-pink-500 hover:text-pink-500 interactive"
+                  onMouseEnter={handleButtonHover}
+                  onMouseLeave={handleButtonLeave}
+                >
+                  See Upcoming Events
+                </button>
               </Link>
             </motion.div>
           </div>
