@@ -198,46 +198,61 @@ export default function AdminDashboard() {
               </motion.div>
             </div>
 
-            {/* Recent Events */}
+            {/* Quick Actions */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="retro-card p-8 mb-8"
+              className="retro-card p-8 mb-12"
             >
-              <h2 className="retro-title text-2xl neon-text neon-green mb-6">Recent Events</h2>
-              <div className="space-y-4">
-                {dashboardData.recent_events.map((event, index) => (
-                  <div key={event.id} className="border-l-4 border-cyan-400 pl-4 py-2">
-                    <h3 className="retro-subtitle text-cyan-300">{event.title}</h3>
-                    <p className="text-sm text-gray-400">
-                      {new Date(event.date).toLocaleDateString()} • {event.registration_count} registrations
-                    </p>
-                  </div>
-                ))}
+              <h2 className="retro-subtitle text-2xl neon-green mb-6">Quick Actions</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <button
+                  onClick={() => router.push('/admin/events')}
+                  className="retro-btn border-green-500 text-green-500 p-4"
+                >
+                  Manage Events
+                </button>
+                <button
+                  onClick={() => router.push('/admin/gallery')}
+                  className="retro-btn border-purple-500 text-purple-500 p-4"
+                >
+                  Manage Gallery
+                </button>
+                <button
+                  onClick={() => window.open('/', '_blank')}
+                  className="retro-btn border-orange-500 text-orange-500 p-4"
+                >
+                  View Live Site
+                </button>
               </div>
             </motion.div>
 
-            {/* Recent Registrations */}
+            {/* Recent Activity */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
               className="retro-card p-8"
             >
-              <h2 className="retro-title text-2xl neon-text neon-purple mb-6">Recent Registrations</h2>
-              <div className="space-y-3">
-                {dashboardData.recent_registrations.map((registration, index) => (
-                  <div key={registration.id} className="flex justify-between items-center py-2 border-b border-cyan-800">
-                    <div>
-                      <span className="text-cyan-300">{registration.name}</span>
-                      <span className="text-gray-400 ml-2">({registration.email})</span>
-                    </div>
-                    <div className="text-sm text-gray-400">
-                      {registration.event_title}
-                    </div>
-                  </div>
-                ))}
+              <h2 className="retro-subtitle text-2xl neon-cyan mb-6">Recent Activity</h2>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between border-b border-cyan-800 pb-2">
+                  <span className="text-cyan-300">Total events created</span>
+                  <span className="text-green-400">{dashboardData.total_events}</span>
+                </div>
+                <div className="flex items-center justify-between border-b border-cyan-800 pb-2">
+                  <span className="text-cyan-300">Active events</span>
+                  <span className="text-cyan-400">{dashboardData.active_events}</span>
+                </div>
+                <div className="flex items-center justify-between border-b border-cyan-800 pb-2">
+                  <span className="text-cyan-300">Total registrations</span>
+                  <span className="text-purple-400">{dashboardData.total_registrations}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-cyan-300">Gallery images</span>
+                  <span className="text-orange-400">{dashboardData.total_gallery_images}</span>
+                </div>
               </div>
             </motion.div>
           </>
